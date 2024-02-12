@@ -102,16 +102,16 @@ public class ConnectionController {
 
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
-            return ResponseEntity.notFound().build();
+			return ResponseEntity.notFound().build();
 		}
 
 	}
-	
+
 	@GetMapping("/get")
-    public ResponseEntity<?> getConnection(@RequestParam(required = false) Long id) {
-        if (id != null) {
-        	IDatabaseConnection obj = null;
-        	try {
+	public ResponseEntity<?> getConnection(@RequestParam(required = false) Long id) {
+		if (id != null) {
+			IDatabaseConnection obj = null;
+			try {
 				obj = export.connection.get(id);
 				return ResponseEntity.ok(obj);
 			} catch (DataNotFoundException e) {
@@ -124,10 +124,10 @@ public class ConnectionController {
 //            } else {
 //                return ResponseEntity.notFound().build();
 //            }
-        } else {
-            List<IDatabaseConnection> connections = export.connection.get();
-            return ResponseEntity.ok(connections);
-        }
-    }
+		} else {
+			List<IDatabaseConnection> connections = export.connection.get();
+			return ResponseEntity.ok(connections);
+		}
+	}
 
 }
