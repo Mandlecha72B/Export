@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maiara.report_utility.errors.DataNotFoundException;
-import com.maiara.report_utility.host.service.ExportUtility;
-import com.maiara.report_utility.host.service.params.IDatabaseSource;
+import com.maiara.report_utility.host.service.impl.ExportUtility;
+import com.maiara.report_utility.host.service.params.DatabaseSourceOptions;
+import com.maiara.report_utility.host.service.params.IDatabaseSourceOptions;
 
 @RestController
 @RequestMapping("/datasource")
@@ -28,9 +29,9 @@ public class DatabaseSourceController {
 	
 	
 	@GetMapping("/get")
-	public ResponseEntity<?> getDatabaseSources(@RequestParam (required = false) Long id){
+	public ResponseEntity<?> get(@RequestParam (required = false) Long id){
 		if(id!=null) {
-			IDatabaseSource record = null;
+			IDatabaseSourceOptions record = null;
 			try {
 				record = export.databaseSource.get(id);
 				return ResponseEntity.ok(record);
@@ -42,7 +43,7 @@ public class DatabaseSourceController {
 			
 		}
 		else{
-			List<IDatabaseSource> datasources = export.databaseSource.get();
+			List<IDatabaseSourceOptions> datasources = export.databaseSource.get();
 			return ResponseEntity.ok(datasources);
 			
 
