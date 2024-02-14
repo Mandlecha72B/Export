@@ -4,6 +4,7 @@ public class DatabaseSource {
 	private String name;
 	private String driverClass;
 	private String sourceName;
+	
 	public String getName() {
 		return name;
 	}

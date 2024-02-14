@@ -6,7 +6,19 @@ public class Connection {
 	private String password;
 	private String database_name;
 	private String name;
+	private long source_id;
+	private int port;
+	private Long id;
 	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -15,7 +27,7 @@ public class Connection {
 		this.name = name;
 	}
 
-	private long source_id;
+	
 
 	public long getSource_id() {
 		return source_id;
@@ -33,7 +45,7 @@ public class Connection {
 		this.port = port;
 	}
 
-	private int port;
+	
 
 	public String getDatabase_name() {
 		return database_name;

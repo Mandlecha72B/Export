@@ -11,26 +11,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.maiara.report_utility.database.entities.QueryParameter;
 import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
 import com.maiara.report_utility.host.service.params.DatabaseConnectionOptions;
 import com.maiara.report_utility.host.service.params.IDatabaseConnectionOptions;
+import com.maiara.report_utility.host.service.params.IQueryParameterOptions;
+import com.maiara.report_utility.host.service.params.IQueryParameterValueOptions;
+import com.maiara.report_utility.host.service.params.QueryParameterOptions;
 import com.maiara.report_utility_host.model.Connection;
+import com.maiara.report_utility_host.model.QueryParameters;
 
 @RestController
-@RequestMapping("/connect")
-public class ConnectionController {
-
+@RequestMapping("/query_parameter")
+public class QueryParameterController {
 	@Autowired
 	ExportUtility export = new ExportUtility();
 	
   
 	@PostMapping("/add")
-	public void add(@RequestBody Connection obj) {
-		
+	public void add(@RequestBody QueryParameters obj) {
 		
 		try {
-			export.connection.add(new DatabaseConnectionOptions(obj.getName(), obj.getServer(), obj.getPort(), obj.getUsername(), obj.getPassword(), obj.getDatabase_name(), obj.getSource_id()));
+			export.queryParameter.add(new QueryParameterOptions(0, null, 0));
+		   
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -42,9 +46,9 @@ public class ConnectionController {
 	@GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
         if (id != null) {
-        	IDatabaseConnectionOptions obj = null;
+        	IQueryParameterOptions obj = null;
         	try {
-				obj = export.connection.get(id);
+				obj = export.queryParameter.get(id);
 				return ResponseEntity.ok(obj);
 			} catch (DataNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -53,9 +57,12 @@ public class ConnectionController {
 			}
 
         } else {
-            List<IDatabaseConnectionOptions> connections = export.connection.get();
-            return ResponseEntity.ok(connections);
+            List<IQueryParameterOptions> queryParameters = export.queryParameter.get();
+            return ResponseEntity.ok(queryParameters);
         }
     }
 
+	
+
+	
 }

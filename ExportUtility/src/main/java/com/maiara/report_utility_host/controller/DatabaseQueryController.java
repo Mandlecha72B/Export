@@ -13,24 +13,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
-import com.maiara.report_utility.host.service.params.DatabaseConnectionOptions;
-import com.maiara.report_utility.host.service.params.IDatabaseConnectionOptions;
-import com.maiara.report_utility_host.model.Connection;
+import com.maiara.report_utility.host.service.params.DatabaseQueryOptions;
+import com.maiara.report_utility.host.service.params.IDatabaseQueryOptions;
+import com.maiara.report_utility.host.service.params.IQueryParameterOptions;
+
+import com.maiara.report_utility_host.model.DatabaseQuery;
+
 
 @RestController
-@RequestMapping("/connect")
-public class ConnectionController {
-
+@RequestMapping("/dataQuery")
+public class DatabaseQueryController {
+	
 	@Autowired
 	ExportUtility export = new ExportUtility();
 	
   
 	@PostMapping("/add")
-	public void add(@RequestBody Connection obj) {
-		
+	public void add(@RequestBody DatabaseQuery obj) {
 		
 		try {
-			export.connection.add(new DatabaseConnectionOptions(obj.getName(), obj.getServer(), obj.getPort(), obj.getUsername(), obj.getPassword(), obj.getDatabase_name(), obj.getSource_id()));
+			export.query.add(new DatabaseQueryOptions(obj.getId(), obj.getName(), obj.getQuery_text(), obj.getNo_of_parameters(), obj.getConnectionId()));
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -42,9 +44,9 @@ public class ConnectionController {
 	@GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
         if (id != null) {
-        	IDatabaseConnectionOptions obj = null;
+        	IDatabaseQueryOptions obj = null;
         	try {
-				obj = export.connection.get(id);
+				obj = export.query.get(id);
 				return ResponseEntity.ok(obj);
 			} catch (DataNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -53,9 +55,10 @@ public class ConnectionController {
 			}
 
         } else {
-            List<IDatabaseConnectionOptions> connections = export.connection.get();
-            return ResponseEntity.ok(connections);
+            List<IDatabaseQueryOptions> query = export.query.get();
+            return ResponseEntity.ok(query);
         }
     }
+
 
 }

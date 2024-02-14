@@ -15,36 +15,28 @@ import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
 import com.maiara.report_utility.host.service.params.DatabaseConnectionOptions;
 import com.maiara.report_utility.host.service.params.IDatabaseConnectionOptions;
+import com.maiara.report_utility.host.service.params.IExecutionRequestOptions;
 import com.maiara.report_utility_host.model.Connection;
+import com.maiara.report_utility_host.model.ExecutionRequest;
 
 @RestController
-@RequestMapping("/connect")
-public class ConnectionController {
-
+@RequestMapping("/executeRequest")
+public class ExecutionRequestController {
 	@Autowired
 	ExportUtility export = new ExportUtility();
 	
   
-	@PostMapping("/add")
-	public void add(@RequestBody Connection obj) {
-		
-		
-		try {
-			export.connection.add(new DatabaseConnectionOptions(obj.getName(), obj.getServer(), obj.getPort(), obj.getUsername(), obj.getPassword(), obj.getDatabase_name(), obj.getSource_id()));
-		} catch (DataNotFoundException e) {
-			e.printStackTrace();
-		}
-
-	}
+	
+	
 
    
 	
 	@GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
         if (id != null) {
-        	IDatabaseConnectionOptions obj = null;
+        	IExecutionRequestOptions obj = null;
         	try {
-				obj = export.connection.get(id);
+				obj = export.executionRequest.get(id);
 				return ResponseEntity.ok(obj);
 			} catch (DataNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -53,8 +45,8 @@ public class ConnectionController {
 			}
 
         } else {
-            List<IDatabaseConnectionOptions> connections = export.connection.get();
-            return ResponseEntity.ok(connections);
+            List<IExecutionRequestOptions> executionRequest = export.executionRequest.get();
+            return ResponseEntity.ok(executionRequest);
         }
     }
 
