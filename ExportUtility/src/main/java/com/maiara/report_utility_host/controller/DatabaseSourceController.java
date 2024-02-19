@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -14,27 +15,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
-import com.maiara.report_utility.host.service.params.DatabaseSourceOptions;
+
 import com.maiara.report_utility.host.service.params.IDatabaseSourceOptions;
 
 @RestController
 @RequestMapping("/datasource")
+@CrossOrigin(origins = "http://localhost:4200")
 public class DatabaseSourceController {
 	String name;
 	String driverClass;
 	String sourceName;
 	
 	@Autowired
-	ExportUtility export = new ExportUtility();
+	ExportUtility exportUtility = new ExportUtility();
 	
 	
 	@GetMapping("/get")
 	public ResponseEntity<?> get(@RequestParam (required = false) Long id){
 		if(id!=null) {
-			IDatabaseSourceOptions record = null;
+			IDatabaseSourceOptions databaseSource = null;
 			try {
-				record = export.databaseSource.get(id);
-				return ResponseEntity.ok(record);
+				databaseSource = exportUtility.databaseSource.get(id);
+				return ResponseEntity.ok(databaseSource);
 			} catch (DataNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -43,7 +45,7 @@ public class DatabaseSourceController {
 			
 		}
 		else{
-			List<IDatabaseSourceOptions> datasources = export.databaseSource.get();
+			List<IDatabaseSourceOptions> datasources = exportUtility.databaseSource.get();
 			return ResponseEntity.ok(datasources);
 			
 
