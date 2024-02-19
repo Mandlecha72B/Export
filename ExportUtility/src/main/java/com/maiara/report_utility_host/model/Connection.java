@@ -6,7 +6,7 @@ public class Connection {
 	private String password;
 	private String database_name;
 	private String name;
-	private long source_id;
+	
 	private int port;
 	private Long id;
 	
@@ -29,13 +29,7 @@ public class Connection {
 
 	
 
-	public long getSource_id() {
-		return source_id;
-	}
-
-	public void setSource_id(long source_id) {
-		this.source_id = source_id;
-	}
+	
 
 	public int getPort() {
 		return port;
@@ -78,4 +72,12 @@ public class Connection {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	@Override
+	public String toString() {
+		return "Connection [server=" + server + ", username=" + username + ", password=" + password + ", database_name="
+				+ database_name + ", name=" + name + ", source_id=" +   ", port=" + port + ", id=" + id + "]";
+	}
+	
+	
 }

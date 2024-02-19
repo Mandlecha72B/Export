@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
+
 import com.maiara.report_utility.host.service.params.DatabaseQueryOptions;
 import com.maiara.report_utility.host.service.params.IDatabaseQueryOptions;
-import com.maiara.report_utility.host.service.params.IQueryParameterOptions;
+
 
 import com.maiara.report_utility_host.model.DatabaseQuery;
 
@@ -25,14 +26,16 @@ import com.maiara.report_utility_host.model.DatabaseQuery;
 public class DatabaseQueryController {
 	
 	@Autowired
-	ExportUtility export = new ExportUtility();
+	ExportUtility exportUtility = new ExportUtility();
 	
   
 	@PostMapping("/add")
-	public void add(@RequestBody DatabaseQuery obj) {
+	public void add(@RequestBody DatabaseQuery databaseQuery) {
 		
 		try {
-			export.query.add(new DatabaseQueryOptions(obj.getId(), obj.getName(), obj.getQuery_text(), obj.getNo_of_parameters(), obj.getConnectionId()));
+			exportUtility.query.add(new DatabaseQueryOptions(databaseQuery.getQueryName(), databaseQuery.getQuery_text(), databaseQuery.getNo_of_parameters(), databaseQuery.getConnectionId(), databaseQuery.getParameterValueId(), true, databaseQuery.getCreatedBy(), databaseQuery.getUpdatedBy()));
+			
+			
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -44,10 +47,10 @@ public class DatabaseQueryController {
 	@GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
         if (id != null) {
-        	IDatabaseQueryOptions obj = null;
+        	IDatabaseQueryOptions databaseQuery = null;
         	try {
-				obj = export.query.get(id);
-				return ResponseEntity.ok(obj);
+				databaseQuery = exportUtility.query.get(id);
+				return ResponseEntity.ok(databaseQuery);
 			} catch (DataNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,7 +58,7 @@ public class DatabaseQueryController {
 			}
 
         } else {
-            List<IDatabaseQueryOptions> query = export.query.get();
+            List<IDatabaseQueryOptions> query = exportUtility.query.get();
             return ResponseEntity.ok(query);
         }
     }

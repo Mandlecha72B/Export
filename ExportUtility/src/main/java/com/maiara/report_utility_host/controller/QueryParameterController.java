@@ -11,45 +11,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.maiara.report_utility.database.entities.QueryParameter;
 import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
-import com.maiara.report_utility.host.service.params.DatabaseConnectionOptions;
-import com.maiara.report_utility.host.service.params.IDatabaseConnectionOptions;
+
 import com.maiara.report_utility.host.service.params.IQueryParameterOptions;
-import com.maiara.report_utility.host.service.params.IQueryParameterValueOptions;
+
 import com.maiara.report_utility.host.service.params.QueryParameterOptions;
-import com.maiara.report_utility_host.model.Connection;
+
 import com.maiara.report_utility_host.model.QueryParameters;
 
 @RestController
 @RequestMapping("/query_parameter")
 public class QueryParameterController {
 	@Autowired
-	ExportUtility export = new ExportUtility();
+	ExportUtility exportUtility = new ExportUtility();
 	
   
 	@PostMapping("/add")
-	public void add(@RequestBody QueryParameters obj) {
+	public void add(@RequestBody QueryParameters queryParameter) {
 		
 		try {
-			export.queryParameter.add(new QueryParameterOptions(0, null, 0));
-		   
+			exportUtility.queryParameter.add(new QueryParameterOptions(null, queryParameter.getDatasource_id(), queryParameter.getName(), queryParameter.getQueryParamSequenceNumber(), queryParameter.getDataType(), queryParameter.getDefaultValue(), queryParameter.isNullable(), queryParameter.getMinValue(), queryParameter.getMaxValue(), queryParameter.getMaxLength(), queryParameter.getParameterRegex(), true, queryParameter.getUpdatedBy(), queryParameter.getCreatedBy()));
+		
+			
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
 		}
 
 	}
-
+	
+	
    
 	
 	@GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
         if (id != null) {
-        	IQueryParameterOptions obj = null;
+        	IQueryParameterOptions queryParameter = null;
         	try {
-				obj = export.queryParameter.get(id);
-				return ResponseEntity.ok(obj);
+				queryParameter = exportUtility.queryParameter.get(id);
+				return ResponseEntity.ok(queryParameter);
 			} catch (DataNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,7 +57,7 @@ public class QueryParameterController {
 			}
 
         } else {
-            List<IQueryParameterOptions> queryParameters = export.queryParameter.get();
+            List<IQueryParameterOptions> queryParameters = exportUtility.queryParameter.get();
             return ResponseEntity.ok(queryParameters);
         }
     }

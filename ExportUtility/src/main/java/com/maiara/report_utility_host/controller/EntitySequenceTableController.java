@@ -5,36 +5,44 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
-
-import com.maiara.report_utility.host.service.params.IExecutionRequestOptions;
+import com.maiara.report_utility.host.service.params.DatabaseConnectionOptions;
+import com.maiara.report_utility.host.service.params.IDatabaseConnectionOptions;
+import com.maiara.report_utility_host.model.Connection;
+import com.maiara.report_utility_host.model.EntitySequenceTable;
 
 @RestController
-@RequestMapping("/executeRequest")
-public class ExecutionRequestController {
+@RequestMapping("/sequenceTable")
+
+public class EntitySequenceTableController {
+	
 	@Autowired
-	ExportUtility exportUtility = new ExportUtility();
+	ExportUtility export = new ExportUtility();
 	
   
-	
-	
+	@PostMapping("/add")
+	public void add(@RequestBody EntitySequenceTable obj) {
+		
+		
+		
+	}
 
    
 	
 	@GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
         if (id != null) {
-        	IExecutionRequestOptions executeRequest = null;
+        	IDatabaseConnectionOptions obj = null;
         	try {
-				executeRequest = exportUtility.executionRequest.get(id);
-				
-				return ResponseEntity.ok(executeRequest);
+				obj = export.connection.get(id);
+				return ResponseEntity.ok(obj);
 			} catch (DataNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -42,9 +50,10 @@ public class ExecutionRequestController {
 			}
 
         } else {
-            List<IExecutionRequestOptions> executionRequest = exportUtility.executionRequest.get();
-            return ResponseEntity.ok(executionRequest);
+            List<IDatabaseConnectionOptions> connections = export.connection.get();
+            return ResponseEntity.ok(connections);
         }
     }
+
 
 }
