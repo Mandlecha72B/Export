@@ -5,11 +5,20 @@ public class Connection {
 	private String username;
 	private String password;
 	private String database_name;
-	private String name;
-	
+	private String dataSourceName;
+	private long source_id ;
 	private int port;
 	private Long id;
+	private String connectionName;
 	
+
+	public String getDataSourceName() {
+		return dataSourceName;
+	}
+
+	public void setDataSourceName(String dataSourceName) {
+		this.dataSourceName = dataSourceName;
+	}
 
 	public Long getId() {
 		return id;
@@ -19,17 +28,16 @@ public class Connection {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	
 	
 
-	
+	public long getSource_id() {
+		return source_id;
+	}
+
+	public void setSource_id(long source_id) {
+		this.source_id = source_id;
+	}
 
 	public int getPort() {
 		return port;
@@ -76,7 +84,15 @@ public class Connection {
 	@Override
 	public String toString() {
 		return "Connection [server=" + server + ", username=" + username + ", password=" + password + ", database_name="
-				+ database_name + ", name=" + name + ", source_id=" +   ", port=" + port + ", id=" + id + "]";
+				+ database_name + ", name=" + connectionName + ", source_id=" + source_id + ", port=" + port + ", id=" + id + "]";
+	}
+
+	public String getConnectionName() {
+		return connectionName;
+	}
+
+	public void setConnectionName(String connectionName) {
+		this.connectionName = connectionName;
 	}
 	
 	

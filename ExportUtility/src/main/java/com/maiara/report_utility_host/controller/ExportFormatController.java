@@ -20,14 +20,16 @@ import com.maiara.report_utility.host.service.params.IExportFormatOptions;
 public class ExportFormatController {
 	
 	@Autowired
-	ExportUtility exportUtility = new ExportUtility();
+	ExportUtility exportUtility ;
 	
-  
+	
 	@GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
         if (id != null) {
         	IExportFormatOptions exportFormat = null;
         	try {
+        		
+        		//Fetching specific Export Format Data  based on id
 				exportFormat = exportUtility.exportFormat.get(id);
 				return ResponseEntity.ok(exportFormat);
 			} catch (DataNotFoundException e) {
@@ -37,6 +39,8 @@ public class ExportFormatController {
 			}
 
         } else {
+        	
+        	//Fetching Export Format Data 
             List<IExportFormatOptions> exportFormat = exportUtility.exportFormat.get();
             return ResponseEntity.ok(exportFormat);
         }

@@ -3,19 +3,33 @@ package com.maiara.report_utility_host.model;
 import java.util.List;
 
 public class QueryParameters {
-	private String name = null;
-	private int queryParamSequenceNumber = 0;
-	private String dataType = null;
-	private String defaultValue = null;
-	private boolean isNullable = false;
-	private long minValue = 0;
-	private long maxValue = 0;
-	private long maxLength = 0;
-	private String parameterRegex = null;
-	private long datasource_id = 0;
-	private String updatedBy = null;
-	private String createdBy = null;
-	private List<Long> parameterValueIds  = null;
+	private String name ;
+	private int queryParamSequenceNumber ;
+	private String dataType ;
+	private String defaultValue ;
+	private boolean isNullable ;
+	private long minValue ;
+	private long maxValue ;
+	private long maxLength ;
+	private String parameterRegex ;
+	private long dabaseQueryId ;
+	private String databaseQueryName;
+	public long getDabaseQueryId() {
+		return dabaseQueryId;
+	}
+	public void setDabaseQueryId(long dabaseQueryId) {
+		this.dabaseQueryId = dabaseQueryId;
+	}
+	public String getDatabaseQuery() {
+		return databaseQuery;
+	}
+	public void setDatabaseQuery(String databaseQuery) {
+		this.databaseQuery = databaseQuery;
+	}
+	private String databaseQuery;
+	private String updatedBy ;
+	private String createdBy ;
+	private List<Long> parameterValueIds ;
 	
 	
 	public List<Long> getParameterValueIds() {
@@ -24,12 +38,7 @@ public class QueryParameters {
 	public void setParameterValueIds(List<Long> parameterValueIds) {
 		this.parameterValueIds = parameterValueIds;
 	}
-	public Long getDatasource_id() {
-		return datasource_id;
-	}
-	public void setDatasource_id(long datasource_id ) {
-		this.datasource_id = datasource_id;
-	}
+	
 	
 	public String getName() {
 		return name;
@@ -96,6 +105,12 @@ public class QueryParameters {
 	}
 	public void setParameterRegex(String parameterRegex) {
 		this.parameterRegex = parameterRegex;
+	}
+	public String getDatabaseQueryName() {
+		return databaseQueryName;
+	}
+	public void setDatabaseQueryName(String databaseQueryName) {
+		this.databaseQueryName = databaseQueryName;
 	}
 	
 	

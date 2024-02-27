@@ -32,6 +32,8 @@ public class ExecutionRequestController {
         if (id != null) {
         	IExecutionRequestOptions executeRequest = null;
         	try {
+        		
+        		//Fetching specific ExecutionRequest  data based on id
 				executeRequest = exportUtility.executionRequest.get(id);
 				
 				return ResponseEntity.ok(executeRequest);
@@ -42,6 +44,8 @@ public class ExecutionRequestController {
 			}
 
         } else {
+        	
+        	//Fetching  entire ExecutionRequest data 
             List<IExecutionRequestOptions> executionRequest = exportUtility.executionRequest.get();
             return ResponseEntity.ok(executionRequest);
         }

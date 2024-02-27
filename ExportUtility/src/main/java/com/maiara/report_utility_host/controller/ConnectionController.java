@@ -35,13 +35,14 @@ public class ConnectionController {
 		
 		
 		try {
-			 sourceName = connection.getName();
+			 sourceName = connection.getDataSourceName();
 			System.out.println(sourceName);
 			
+			//Mapping datasource-name with datasource-id in dataSource table
 			List<IDatabaseSourceOptions> datasources = exportUtility.databaseSource.get();
 			for(IDatabaseSourceOptions dataSource: datasources) {
-				/*System.out.println(dataSource.getName());
-				System.out.println(dataSource.getId());*/
+				System.out.println(dataSource.getName());
+				System.out.println(dataSource.getId());
 				if(dataSource.getName().equals(sourceName)) {
 					sourceId = dataSource.getId();
 					System.out.println(sourceId + "Source ");
@@ -49,8 +50,10 @@ public class ConnectionController {
 				
 			}
 			
+			
+			//Adding connection
 
-			exportUtility.connection.add(new DatabaseConnectionOptions(connection.getName(), connection.getServer(), connection.getPort(), connection.getUsername(), connection.getPassword(), connection.getDatabase_name(), sourceId));
+			exportUtility.connection.add(new DatabaseConnectionOptions(connection.getConnectionName(), connection.getServer(), connection.getPort(), connection.getUsername(), connection.getPassword(), connection.getDatabase_name(), sourceId));
 			
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
@@ -65,6 +68,9 @@ public class ConnectionController {
         if (id != null) {
         	IDatabaseConnectionOptions connection = null;
         	try {
+        		
+        		//fetching specific connection data based on id 
+        		
 				connection = exportUtility.connection.get(id);
 				return ResponseEntity.ok(connection);
 			} catch (DataNotFoundException e) {
@@ -74,6 +80,9 @@ public class ConnectionController {
 			}
 
         } else {
+        	
+        	//fetching entire connection data
+        	
             List<IDatabaseConnectionOptions> connections = exportUtility.connection.get();
             return ResponseEntity.ok(connections);
         }

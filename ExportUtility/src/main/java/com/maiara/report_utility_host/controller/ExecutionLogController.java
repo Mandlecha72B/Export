@@ -18,7 +18,7 @@ import com.maiara.report_utility.host.service.params.IExecutionLogOptions;
 public class ExecutionLogController {
 	
 	@Autowired
-	ExportUtility exportUtility = new ExportUtility();
+	ExportUtility exportUtility ;
 	
 	
 	@GetMapping("/get")
@@ -27,6 +27,7 @@ public class ExecutionLogController {
         	IExecutionLogOptions executeLog = null;
         	try {
 				executeLog = exportUtility.executionLog.get(id);
+				
 				
 				return ResponseEntity.ok(executeLog);
 			} catch (DataNotFoundException e) {
