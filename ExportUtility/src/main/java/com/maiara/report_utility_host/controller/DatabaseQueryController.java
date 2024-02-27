@@ -15,9 +15,9 @@ import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
 
 import com.maiara.report_utility.host.service.params.DatabaseQueryOptions;
+import com.maiara.report_utility.host.service.params.IDatabaseConnectionOptions;
 import com.maiara.report_utility.host.service.params.IDatabaseQueryOptions;
-
-
+import com.maiara.report_utility.host.service.params.IDatabaseSourceOptions;
 import com.maiara.report_utility_host.model.DatabaseQuery;
 
 
@@ -27,28 +27,48 @@ public class DatabaseQueryController {
 	
 	@Autowired
 	ExportUtility exportUtility = new ExportUtility();
-	
+	String connectionName;
+	long connectonId;
   
 	@PostMapping("/add")
-	public void add(@RequestBody DatabaseQuery databaseQuery) {
+	public IDatabaseQueryOptions  add(@RequestBody DatabaseQuery databaseQuery) {
 		
-		try {
-			exportUtility.query.add(new DatabaseQueryOptions(databaseQuery.getQueryName(), databaseQuery.getQuery_text(), databaseQuery.getNo_of_parameters(), databaseQuery.getConnectionId(), databaseQuery.getParameterValueId(), true, databaseQuery.getCreatedBy(), databaseQuery.getUpdatedBy()));
+	    connectionName = databaseQuery.getConnectionName();
+		System.out.println(connectionName);
+		
+		//Mapping connection-name with connection-id in connection table
+		
+		List<IDatabaseConnectionOptions> connections = exportUtility.connection.get();
+		for( IDatabaseConnectionOptions connection: connections ) {
+			System.out.println(connection.getConnectionName());
+			System.out.println(connection.getId());
+			if(connection.getConnectionName().equals(connectionName)) {
+				connectonId = connection.getId();
+				System.out.println(connectonId + "Connection ");
+			}
 			
+		}
+		try {
+			
+			//adding DatabaseQuery
+			return exportUtility.query.add(new DatabaseQueryOptions(1, databaseQuery.getQueryName(), databaseQuery.getQuery_text(),databaseQuery.getNo_of_parameters(), connectonId));
+	        
 			
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
 		}
+		return null;
 
 	}
 
-   
-	
+  
 	@GetMapping("/get")
     public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
         if (id != null) {
         	IDatabaseQueryOptions databaseQuery = null;
         	try {
+        		
+        		//Fetching specific dabaseQuery data based on id
 				databaseQuery = exportUtility.query.get(id);
 				return ResponseEntity.ok(databaseQuery);
 			} catch (DataNotFoundException e) {
@@ -58,6 +78,8 @@ public class DatabaseQueryController {
 			}
 
         } else {
+        	
+        	//fetching entire databaseQuery data
             List<IDatabaseQueryOptions> query = exportUtility.query.get();
             return ResponseEntity.ok(query);
         }

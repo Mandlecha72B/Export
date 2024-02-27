@@ -11,43 +11,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.maiara.report_utility.enums.DestinationType;
 import com.maiara.report_utility.errors.DataNotFoundException;
 import com.maiara.report_utility.host.service.impl.ExportUtility;
 import com.maiara.report_utility.host.service.params.ExportDestinationOptions;
+import com.maiara.report_utility.host.service.params.IDatabaseSourceOptions;
+import com.maiara.report_utility.host.service.params.IDestinationTypeOptions;
 import com.maiara.report_utility.host.service.params.IExportDestinationOptions;
-
+import com.maiara.report_utility_host.model.ExecutionRequest;
 import com.maiara.report_utility_host.model.ExportDestination;
-
 
 @RestController
 @RequestMapping("/exportDestination")
 
 public class ExportDestinationController {
 	@Autowired
-	ExportUtility exportUtility = new ExportUtility();
-	
-  
+	ExportUtility exportUtility;
+
 	@PostMapping("/add")
 	public void add(@RequestBody ExportDestination exportDestination) {
-		
+
 		try {
-			exportUtility.exportDestination.add(new ExportDestinationOptions(exportDestination.getDestinationTypeId(), exportDestination.getName(), exportDestination.geteMails(), exportDestination.getEmailSubject(), exportDestination.getEmailMessageBody(), exportDestination.getLocalFolderFilePath(), exportDestination.getFtpServerIp(), exportDestination.getFtpUsername(), exportDestination.getFtpPassword(), exportDestination.getFtpPort(), exportDestination.getDescription(), true, exportDestination.getCreatedBy(), exportDestination.getUpdatedBy()));
-		
+
+			exportUtility.exportDestination.add(new ExportDestinationOptions(exportDestination.getDestination(),
+					exportDestination.getName(), exportDestination.getToAddress(), exportDestination.getCcAddress(),
+					exportDestination.getEmailSubject(), exportDestination.getEmailMessageBody(),
+					exportDestination.getLocalFolderFilePath(), exportDestination.getFtpServerIp(),
+					exportDestination.getFtpUsername(), exportDestination.getFtpPassword(),
+					exportDestination.getFtpPort(), exportDestination.getDescription(), true,
+					exportDestination.getCreatedBy(), exportDestination.getUpdatedBy()));
+
 			
 		} catch (DataNotFoundException e) {
 			e.printStackTrace();
 		}
 
 	}
-	
-	
-   
-	
+
 	@GetMapping("/get")
-    public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
-        if (id != null) {
-        	IExportDestinationOptions exportDestination = null;
-        	try {
+	public ResponseEntity<?> get(@RequestParam(required = false) Long id) {
+		if (id != null) {
+			IExportDestinationOptions exportDestination = null;
+			try {
 				exportDestination = exportUtility.exportDestination.get(id);
 				return ResponseEntity.ok(exportDestination);
 			} catch (DataNotFoundException e) {
@@ -56,11 +61,10 @@ public class ExportDestinationController {
 				return ResponseEntity.notFound().build();
 			}
 
-        } else {
-            List<IExportDestinationOptions> exportDestination = exportUtility.exportDestination.get();
-            return ResponseEntity.ok(exportDestination);
-        }
-    }
-	
+		} else {
+			List<IExportDestinationOptions> exportDestination = exportUtility.exportDestination.get();
+			return ResponseEntity.ok(exportDestination);
+		}
+	}
 
 }

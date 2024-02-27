@@ -1,20 +1,45 @@
 package com.maiara.report_utility_host.model;
 
+import com.maiara.report_utility.enums.DestinationType;
+
 public class ExportDestination {
 	
-	private long destinationTypeId = 0;
-	private String name = null;
-	private String eMails = null;
-	private String emailSubject = null;
-	private String emailMessageBody = null;
-	private String localFolderFilePath = null;
-	private String ftpServerIp = null;
-	private String ftpUsername = null;
-	private String ftpPassword = null;
-	private int ftpPort = 0;
-	private String description  = null;
-	private String createdBy = null;
-	private String updatedBy = null;
+	private long destinationTypeId ;
+	private String name ;
+	private String eMails ;
+	private String emailSubject ;
+	private String emailMessageBody ;
+	private String localFolderFilePath ;
+	private String ftpServerIp ;
+	private String ftpUsername ;
+	private String ftpPassword ;
+	private int ftpPort ;
+	private String description  ;
+	private String createdBy ;
+	private String updatedBy ;
+	private String destination;
+	private DestinationType destinationType;
+	private String ccAddress;
+	private String toAddress;
+	public String getCcAddress() {
+		return ccAddress;
+	}
+	public void setCcAddress(String ccAddress) {
+		this.ccAddress = ccAddress;
+	}
+	public String getToAddress() {
+		return toAddress;
+	}
+	public void setToAddress(String toAddress) {
+		this.toAddress = toAddress;
+	}
+	public DestinationType getDestination() {
+		return destinationType;
+	}
+	public void setDestination(String destination) {
+		this.destination = destination;
+		this.destinationType = DestinationType.valueOf(destination);
+	}
 	public long getDestinationTypeId() {
 		return destinationTypeId;
 	}

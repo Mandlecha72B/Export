@@ -35,7 +35,10 @@ public class DatabaseSourceController {
 		if(id!=null) {
 			IDatabaseSourceOptions databaseSource = null;
 			try {
+				
+				//Fetching specific datasource data based on id
 				databaseSource = exportUtility.databaseSource.get(id);
+				
 				return ResponseEntity.ok(databaseSource);
 			} catch (DataNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -45,7 +48,10 @@ public class DatabaseSourceController {
 			
 		}
 		else{
+			
+			//Fetching entire datasource data
 			List<IDatabaseSourceOptions> datasources = exportUtility.databaseSource.get();
+			System.out.println();
 			return ResponseEntity.ok(datasources);
 			
 
