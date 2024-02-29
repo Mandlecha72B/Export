@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,8 @@ public class DatabaseQueryController {
 	ExportUtility exportUtility = new ExportUtility();
 	String connectionName;
 	long connectonId;
+	long queryId;
+	List<IDatabaseQueryOptions> query;
   
 	@PostMapping("/add")
 	public IDatabaseQueryOptions  add(@RequestBody DatabaseQuery databaseQuery) {
@@ -80,10 +83,29 @@ public class DatabaseQueryController {
         } else {
         	
         	//fetching entire databaseQuery data
-            List<IDatabaseQueryOptions> query = exportUtility.query.get();
+             query = exportUtility.query.get();
             return ResponseEntity.ok(query);
         }
     }
+	
+	@DeleteMapping("/delete")
+	
+	public void delete(@RequestParam String queryName ) {
+		 query = exportUtility.query.get();
+		 for(IDatabaseQueryOptions dataquery :query) {
+			 if(dataquery.getQueryName().equals(queryName)) {
+				 this.queryId = dataquery.getId();
+				 try {
+					exportUtility.connection.delete(queryId);
+				} catch (DataNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+		 }
+		
+	}
+
 
 
 }

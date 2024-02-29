@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,8 @@ public class ConnectionController {
 	ExportUtility exportUtility = new ExportUtility();
 	long sourceId ;
 	String sourceName;
+	long connectionId;
+	List<IDatabaseConnectionOptions> connections;
   
 	@PostMapping("/add")
 	public void add(@RequestBody Connection connection) {
@@ -83,9 +86,27 @@ public class ConnectionController {
         	
         	//fetching entire connection data
         	
-            List<IDatabaseConnectionOptions> connections = exportUtility.connection.get();
+            connections = exportUtility.connection.get();
             return ResponseEntity.ok(connections);
         }
     }
+	
+	@DeleteMapping("/delete")
+		
+	public void delete(@RequestParam String connectionName ) {
+		 connections = exportUtility.connection.get();
+		 for(IDatabaseConnectionOptions connection :connections) {
+			 if(connection.getConnectionName().equals(connectionName)) {
+				 this.connectionId = connection.getId();
+				 try {
+					exportUtility.connection.delete(connectionId);
+				} catch (DataNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+		 }
+		
+	}
 
 }
